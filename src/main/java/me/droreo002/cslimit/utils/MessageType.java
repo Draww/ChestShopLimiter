@@ -1,0 +1,17 @@
+package me.droreo002.cslimit.utils;
+
+public enum MessageType {
+
+    NO_PERMISSION,
+    ABOUT,
+    PLAYER_ONLY,
+    HELP,
+    TOO_MUCH_ARGS,
+    SHOP_CREATED,
+    SHOP_REMOVED,
+    ERROR_CANNOT_LOAD_DATA,
+    ERROR_PLAYER_NEVER_PLAYED,
+    MISC_TELEPORT_BUTTON,
+    MISC_TELEPORT_BUTTON_HOVER,
+    ERROR_LIMIT_REACHED;
+}
