@@ -4,3 +4,21 @@ main: me.droreo002.cslimit.ChestShopLimiter
 depend: [ChestShop]
 softdepend: [LuckPerms]
 authors: [DrOreo002]
+
+commands:
+  chestshoplimiter:
+    aliases: [csl]
+permissions:
+  csl.*:
+    children:
+      csl.admin.*: true
+      csl.player.*: true
+  csl.admin.*:
+    children:
+      csl.admin.check: true
+      csl.admin.teleport: true
+      csl.admin.reset: true
+  csl.limit.unlimited:
+    default: op
+  csl.admin.check:
+    default: op

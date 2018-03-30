@@ -1,0 +1,34 @@
+# Plugin prefix!
+Prefix: '&7[ &a&lCSL&c&l+ &7]&f ➟&r '
+
+# Set this to true if you want to decrease the shopCreated value on player's data on ShopRemove. The refunded value will always be 1
+RefundOnShopRemove: true
+
+# Limit for groups. You can enable "LuckPermsSupport" if you want to set the limit with luckperms group instead
+# btw, using luckperms is much better and you'll got 0 bugs. But, this is by default will be set to false
+LuckPermsSupport: false
+
+# Now'll explain you how the limit works. Sorry 4 my bad english
+# Shop limit will be needed if the player that is checked didn't have the csl.limit.unlimited permission.
+ShopLimit:
+  # You can name it whatever you want to. The permission will be csl.limit.<name>
+  # It is recommended to have the limit below 10, because it will create lags when the player join the server for the first time, when the plugin installed
+  # Btw, it is okay to delete this default config key.
+  default:
+    limit: 5
+  vip:
+    limit: 10
+  mvp:
+    limit: 20
+
+# Will be used if you have LuckPermsSupport enabled!.
+# WARNING PLEASE READ ALL OF THE COMMENT BELOW IF YOU WANT TO USE LuckPerms SUPPORT!
+ShopLimitLuckperms:
+  # Please name it exactly the SAME name on the luckperms group
+  # You can rename this, I use iron, gold, diamond because that is the group that I use for my test server
+  iron:
+    limit: 10
+  gold:
+    limit: 20
+  diamond:
+    limit: 30
