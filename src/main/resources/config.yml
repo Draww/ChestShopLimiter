@@ -1,6 +1,11 @@
 # Plugin prefix!
 Prefix: '&7[ &a&lCSL&c&l+ &7]&f ➟&r '
 
+# Which lang file that you want to use, you can name it whatever you want to. To make one just copy and paste the whole lang.yml file and
+# rename it, make sure you don't edit any of the config keys
+# WARNING it will throw an error and disabled the plugin if the <name>.yml file is not found!
+Language: 'EN_lang' # + yml
+
 # Set this to true if you want to decrease the shopCreated value on player's data on ShopRemove. The refunded value will always be 1
 RefundOnShopRemove: true
 
@@ -26,7 +31,8 @@ ShopLimit:
 # Will be used if you have LuckPermsSupport enabled!.
 # WARNING PLEASE READ ALL OF THE COMMENT BELOW IF YOU WANT TO USE LuckPerms SUPPORT!
 ShopLimitLuckperms:
-  # Please name it exactly the SAME name on the luckperms group
+
+  # Please name it exactly the SAME name on the luckperms group. The usage for the permission will be csl.limit.<group>
   # You can rename this, I use iron, gold, diamond because that is the group that I use for my test server
   iron:
     limit: 10
