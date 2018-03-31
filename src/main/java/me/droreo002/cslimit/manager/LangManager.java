@@ -48,6 +48,14 @@ public class LangManager {
 
     public String getMessage(MessageType type) {
         switch (type) {
+            case ERROR_INVALID_USAGE_RELOAD:
+                return colorized(plugin.getPrefix() + getLangFile().getString("error.usage.command-reload"));
+            case LANG_RELOADED:
+                return colorized(plugin.getPrefix() + getLangFile().getString("normal.lang-reloaded"));
+            case CONFIG_RELOADED:
+                return colorized(plugin.getPrefix() + getLangFile().getString("normal.config-reloaded"));
+            case ERROR_INVALID_RELOAD_TYPE:
+                return colorized(plugin.getPrefix() + getLangFile().getString("error.invalid-reload-type"));
             case SHOP_CREATED_RESET_OTHER:
                 return colorized(plugin.getPrefix() + getLangFile().getString("normal.shop-created-reset-other"));
             case ERROR_INVALID_USAGE_CHECK:
@@ -217,6 +225,15 @@ public class LangManager {
         String fileName = plugin.getConfigManager().getConfig().getString("Language") + ".yml";
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdir();
+        }
+        File enFile = new File(plugin.getDataFolder(), "EN_lang.yml");
+        if (!enFile.exists()) {
+            try {
+                enFile.createNewFile();
+                plugin.saveResource("EN_lang.yml", true);
+            } catch (IOException e) {
+                // Ignore
+            }
         }
         MainConfigFile = new File(plugin.getDataFolder(), fileName);
         if (!MainConfigFile.exists()) {

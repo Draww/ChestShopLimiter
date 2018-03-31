@@ -37,6 +37,9 @@ public class MainCommand implements CommandExecutor {
                     case "check":
                         player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_CHECK));
                         return true;
+                    case "reload":
+                        player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_RELOAD));
+                        return true;
                     default:
                         player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_UNKNOW_COMMAND));
                         return true;
@@ -93,6 +96,30 @@ public class MainCommand implements CommandExecutor {
                     main.getApi().resetShopCreated(target);
                     target.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET_OTHER, player));
                     return true;
+                }
+                if (args[0].equalsIgnoreCase("reload")) {
+                    if (!player.hasPermission("csl.admin.reload")) {
+                        player.sendMessage(main.getLangManager().getMessage(MessageType.NO_PERMISSION));
+                        return true;
+                    }
+                    if (args.length > 2) {
+                        player.sendMessage(main.getLangManager().getMessage(MessageType.TOO_MUCH_ARGS));
+                        return true;
+                    }
+                    String type = args[1];
+                    switch (type.toLowerCase()) {
+                        case "config":
+                            main.getConfigManager().reloadConfig();
+                            player.sendMessage(main.getLangManager().getMessage(MessageType.CONFIG_RELOADED));
+                            return true;
+                        case "lang":
+                            main.getLangManager().reloadLangFile();
+                            player.sendMessage(main.getLangManager().getMessage(MessageType.LANG_RELOADED));
+                            return true;
+                        default:
+                            player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_RELOAD_TYPE));
+                            return true;
+                    }
                 }
             }
         } else {

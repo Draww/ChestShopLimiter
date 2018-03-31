@@ -2,6 +2,10 @@
 # if you don't understand what is the message mean and when it fill fired. Please read carefully!
 
 normal:
+  # Fired when config file reloaded
+  config-reloaded: 'Reloaded the config.yml file!'
+  # Fired when the lag file reloaded
+  lang-reloaded: 'Reloaded the lang file!'
   # Fired, when player has no permission on executing csl command
   no-permission: '&cYou don''t have the right perms to do this!'
   # Fired when console trying to access the player command
@@ -31,12 +35,16 @@ error:
     command-check: 'Invalid usage!. Please use /csl check <name>'
     # Fired when the player use an unknown command!
     command-unknown: 'Unknown command!. Please use &6/csl help! &for &6/cslc help'
+    # Fired when the command usage is invalid at /csl reload <type>
+    command-reload: 'Invalid usage!. Please use /csl reload <type>'
   # Fired when LuckPerms cannot load user data
   cannot-load-data: 'There''s an error with luckperms!. Please contact server admin for help!'
   # Fired when the targeted player is never player on the server
   player-never-player: 'That player is never played on this server!. Please enter the name correctly!'
   # Fired then the shop limit has been reached by the player
   limit-reached: 'Shop limit reached!. Please upgrade your rank to create more shops!. Usage left : &a%created &f/ &c%max'
+  # When the command sender send invalid reload type
+  invalid-reload-type: 'Invalid reload type!, Available type is : config and lang!'
 list:
   help-message:
     - '&7[&c&l!&7]&e___________o0o &7[ &aChestShopLimiter &7] &eo0o___________&7[&c&l!&7]'
