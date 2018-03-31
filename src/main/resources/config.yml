@@ -1,10 +1,11 @@
 # Plugin prefix!
 Prefix: '&7[ &a&lCSL&c&l+ &7]&f ➟&r '
 
-# Which lang file that you want to use, you can name it whatever you want to. To make one just copy and paste the whole lang.yml file and
-# rename it, make sure you don't edit any of the config keys
+# Which lang file that you want to use, you can name it whatever you want to. Btw
+# make sure To make one just copy and paste the whole lang.yml file and
+# rename it, make sure you don't edit any of the config keys, by default it will make a EN_lang file if no lang file found
 # WARNING it will throw an error and disabled the plugin if the <name>.yml file is not found!
-Language: 'EN_lang' # + yml
+Language: 'IND_lang' # + yml
 
 # Set this to true if you want to decrease the shopCreated value on player's data on ShopRemove. The refunded value will always be 1
 RefundOnShopRemove: true

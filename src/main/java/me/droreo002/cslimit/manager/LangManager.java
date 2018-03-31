@@ -209,22 +209,19 @@ public class LangManager {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
-    public void setup()
-    {
+    public void setup() {
+        if (!plugin.getConfigManager().getConfig().isSet("Language")) {
+            Bukkit.getPluginManager().disablePlugin(plugin);
+            throw new NullPointerException("Language is not set!. Please set it otherwise the plugin wont work!. Disabling the plugin");
+        }
+        String fileName = plugin.getConfigManager().getConfig().getString("Language") + ".yml";
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdir();
         }
-        MainConfigFile = new File(plugin.getDataFolder(), "lang.yml");
+        MainConfigFile = new File(plugin.getDataFolder(), fileName);
         if (!MainConfigFile.exists()) {
-            try
-            {
-                MainConfigFile.createNewFile();
-                plugin.saveResource("lang.yml", true);
-            }
-            catch (IOException e)
-            {
-                Bukkit.getServer().getLogger().log(Level.SEVERE, "Could not save " + MainConfigFile + ".", e);
-            }
+            Bukkit.getPluginManager().disablePlugin(plugin);
+            throw new NullPointerException("Cannot find the lang file!. Make sure the file name is correct!");
         }
         MainConfig = YamlConfiguration.loadConfiguration(MainConfigFile);
     }
@@ -254,12 +251,17 @@ public class LangManager {
 
     public void reloadLangFile()
     {
-        MainConfigFile = new File(plugin.getDataFolder(), "lang.yml");
+        String fileName = plugin.getConfigManager().getConfig().getString("Language") + ".yml";
+        MainConfigFile = new File(plugin.getDataFolder(), fileName);
         if (!MainConfigFile.exists()) {
-            plugin.saveResource("lang.yml", false);
+            /*
+            plugin.saveResource("EN_lang.yml", false);
+            */
+            Bukkit.getPluginManager().disablePlugin(plugin);
+            throw new NullPointerException("Cannot find the lang file!. Make sure the file name is correct!");
         }
         MainConfig = YamlConfiguration.loadConfiguration(MainConfigFile);
-        InputStream configData = plugin.getResource("lang.yml");
+        InputStream configData = plugin.getResource("EN_lang.yml");
         if (configData != null) {
             MainConfig.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(configData)));
         }
