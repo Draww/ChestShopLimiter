@@ -14,6 +14,8 @@ ShopLimit:
   # You can name it whatever you want to. The permission will be csl.limit.<name>
   # It is recommended to have the limit below 10, because it will create lags when the player join the server for the first time, when the plugin installed
   # Btw, it is okay to delete this default config key.
+  # Oh and, it is recommended to only edit the value ONCE!. Because it will not reset the shop limit value on the player that joined before the change!
+  # this will be fixed in the next update.
   default:
     limit: 5
   vip:

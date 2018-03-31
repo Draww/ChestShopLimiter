@@ -8,6 +8,8 @@ authors: [DrOreo002]
 commands:
   chestshoplimiter:
     aliases: [csl]
+  chestshoplimiterconsole:
+    aliases: [cslc, csc, clc]
 permissions:
   csl.*:
     children:

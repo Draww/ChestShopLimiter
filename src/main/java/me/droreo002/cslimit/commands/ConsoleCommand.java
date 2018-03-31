@@ -8,50 +8,46 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerToggleFlightEvent;
 
-public class MainCommand implements CommandExecutor {
+import java.awt.*;
+
+public class ConsoleCommand implements CommandExecutor {
 
     private ChestShopLimiter main;
 
-    public MainCommand(ChestShopLimiter main) {
+    public ConsoleCommand(ChestShopLimiter main) {
         this.main = main;
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(main.getLangManager().getMessage(MessageType.PLAYER_ONLY));
+        if (sender instanceof Player) {
+            sender.sendMessage(main.getLangManager().getMessage(MessageType.CONSOLE_ONLY));
             return true;
         }
-        Player player = (Player) sender;
         if (args.length > 0) {
             if (args.length == 1) {
                 switch (args[0].toLowerCase()) {
                     case "help":
                         for (String s : main.getLangManager().getMessageList(MessageType.HELP)) {
-                            player.sendMessage(s);
+                            sender.sendMessage(s);
                         }
                         return true;
                     case "check":
-                        player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_CHECK));
+                        sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_CHECK));
                         return true;
                     default:
-                        player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_UNKNOW_COMMAND));
+                        sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_UNKNOW_COMMAND));
                         return true;
                 }
             }
-
-            // Common commands (Ignore the warning. If you use IntelliJ)
+            
+            // Common commands
             if (args.length > 1) {
                 if (args[0].equalsIgnoreCase("check")) {
-                    if (!player.hasPermission("csl.admin.check")) {
-                        player.sendMessage(main.getLangManager().getMessage(MessageType.NO_PERMISSION));
-                        return true;
-                    }
                     if (args.length > 2) {
-                        player.sendMessage(main.getLangManager().getMessage(MessageType.TOO_MUCH_ARGS));
+                        sender.sendMessage(main.getLangManager().getMessage(MessageType.TOO_MUCH_ARGS));
                         return true;
                     }
                     String name = args[1];
@@ -59,22 +55,22 @@ public class MainCommand implements CommandExecutor {
                     if (target == null) {
                         OfflinePlayer off = Bukkit.getOfflinePlayer(name);
                         if (!off.hasPlayedBefore()) {
-                            player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
+                            sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
                             return true;
                         }
-                        main.getLangManager().sendCheckFormat(player, off);
+                        main.getLangManager().sendCheckFormat(sender, off);
                         return true;
                     }
-                    main.getLangManager().sendCheckFormat(player, target);
+                    main.getLangManager().sendCheckFormat(sender, target);
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("reset")) {
-                    if (!player.hasPermission("csl.admin.reset")) {
-                        player.sendMessage(main.getLangManager().getMessage(MessageType.NO_PERMISSION));
+                    if (!sender.hasPermission("csl.admin.reset")) {
+                        sender.sendMessage(main.getLangManager().getMessage(MessageType.NO_PERMISSION));
                         return true;
                     }
                     if (args.length > 2) {
-                        player.sendMessage(main.getLangManager().getMessage(MessageType.TOO_MUCH_ARGS));
+                        sender.sendMessage(main.getLangManager().getMessage(MessageType.TOO_MUCH_ARGS));
                         return true;
                     }
                     String name = args[1];
@@ -82,23 +78,23 @@ public class MainCommand implements CommandExecutor {
                     if (target == null) {
                         OfflinePlayer off = Bukkit.getOfflinePlayer(name);
                         if (!off.hasPlayedBefore()) {
-                            player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
+                            sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
                             return true;
                         }
                         main.getApi().resetShopCreated(off);
-                        player.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET, off.getPlayer()));
+                        sender.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET, off.getPlayer()));
                         return true;
                     }
-                    player.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET, target));
+                    sender.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET, target));
+                    target.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET_OTHER).replaceAll("%player", "CONSOLE"));
                     main.getApi().resetShopCreated(target);
-                    target.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET_OTHER, player));
                     return true;
                 }
             }
         } else {
-            player.sendMessage(main.getLangManager().getMessage(MessageType.ABOUT));
+            sender.sendMessage(main.getLangManager().getMessage(MessageType.ABOUT));
             return true;
         }
-        return true;
+        return false;
     }
 }

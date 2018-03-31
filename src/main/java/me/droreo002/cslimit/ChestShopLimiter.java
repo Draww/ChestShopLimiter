@@ -1,6 +1,7 @@
 package me.droreo002.cslimit;
 
 import me.droreo002.cslimit.api.ChestSL;
+import me.droreo002.cslimit.commands.ConsoleCommand;
 import me.droreo002.cslimit.commands.MainCommand;
 import me.droreo002.cslimit.hook.HookManager;
 import me.droreo002.cslimit.hook.LuckPermsHook;
@@ -37,6 +38,7 @@ public class ChestShopLimiter extends JavaPlugin {
         // Use this to register command and stuff
 
         Bukkit.getPluginCommand("chestshoplimiter").setExecutor(new MainCommand(this));
+        Bukkit.getPluginCommand("chestshoplimiterconsole").setExecutor(new ConsoleCommand(this));
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ShopCreateListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);

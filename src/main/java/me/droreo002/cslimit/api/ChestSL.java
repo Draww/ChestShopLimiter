@@ -6,6 +6,7 @@ import me.droreo002.cslimit.manager.PlayerData;
 import me.droreo002.cslimit.utils.MessageType;
 import me.lucko.luckperms.api.User;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -83,6 +84,24 @@ public class ChestSL {
         return data.getInt("Info.shopLimit");
     }
 
+    // Get the limit for the player (offline only)
+    public int getShopLimitValue(OfflinePlayer player) {
+        PlayerData data = PlayerData.getConfig(main, player);
+        return data.getInt("Info.shopLimit");
+    }
+
+    // Get the last shop created for the specified player (offline only)
+    public Location getLastShopCreated(OfflinePlayer player) {
+        PlayerData data = PlayerData.getConfig(main, player);
+        return (Location) data.get("lastShopCreated.location");
+    }
+
+    // Get the last shop created for the specified player
+    public Location getLastShopCreated(Player player) {
+        PlayerData data = PlayerData.getConfig(main, player);
+        return (Location) data.get("lastShopCreated.location");
+    }
+
     // Setup the limit permission
     public void setupShopLimitValue(Player player) {
         PlayerData data = PlayerData.getConfig(main, player);
@@ -154,6 +173,22 @@ public class ChestSL {
         PlayerData data = PlayerData.getConfig(main, player);
         if (data.getInt("Info.shopCreated") <= 0) return;
         data.set("Info.shopCreated", getShopCreated(player) - value);
+        data.save();
+    }
+
+    // Reset the shop created for specified player. Online player only
+    public void resetShopCreated(Player player) {
+        PlayerData data = PlayerData.getConfig(main, player);
+        if (data.getInt("Info.shopCreated") <= 0) return;
+        data.set("Info.shopCreated", 0);
+        data.save();
+    }
+
+    // Reset the shop created for specified player. Offline player only
+    public void resetShopCreated(OfflinePlayer player) {
+        PlayerData data = PlayerData.getConfig(main, player);
+        if (data.getInt("Info.shopCreated") <= 0) return;
+        data.set("Info.shopCreated", 0);
         data.save();
     }
 }

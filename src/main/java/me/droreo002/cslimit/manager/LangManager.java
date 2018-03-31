@@ -3,12 +3,16 @@ package me.droreo002.cslimit.manager;
 import me.droreo002.cslimit.ChestShopLimiter;
 import me.droreo002.cslimit.utils.MessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -44,6 +48,14 @@ public class LangManager {
 
     public String getMessage(MessageType type) {
         switch (type) {
+            case SHOP_CREATED_RESET_OTHER:
+                return colorized(plugin.getPrefix() + getLangFile().getString("normal.shop-created-reset-other"));
+            case ERROR_INVALID_USAGE_CHECK:
+                return colorized(plugin.getPrefix() + getLangFile().getString("error.usage.command-check"));
+            case ERROR_UNKNOW_COMMAND:
+                return colorized(plugin.getPrefix() + getLangFile().getString("error.usage.command-unknown"));
+            case CONSOLE_ONLY:
+                return colorized(plugin.getPrefix() + getLangFile().getString("normal.console-only"));
             case TOO_MUCH_ARGS:
                 return colorized(plugin.getPrefix() + getLangFile().getString("normal.too-much-args"));
             case PLAYER_ONLY:
@@ -79,6 +91,12 @@ public class LangManager {
                 return plugin.getPrefix() + colorized(getLangFile().getString("normal.shop-removed")
                         .replaceAll("%created", Integer.toString(plugin.getApi().getShopCreated(player)))
                         .replaceAll("%max", Integer.toString(plugin.getApi().getShopLimitValue(player))));
+            case SHOP_CREATED_RESET:
+                return colorized(plugin.getPrefix() + getLangFile().getString("normal.shop-created-reset")
+                .replaceAll("%player", player.getName()));
+            case SHOP_CREATED_RESET_OTHER:
+                return colorized(plugin.getPrefix() + getLangFile().getString("normal.shop-created-reset-other")
+                .replaceAll("%player", player.getName()));
             default:
                 return getMessage(type);
         }
@@ -123,8 +141,9 @@ public class LangManager {
     }
     */
 
-    // Get the chestformat for offline player
-    public void sendCheckFormat(Player sender, OfflinePlayer target) {
+    // Send the check format to specified player
+    public void sendCheckFormat(CommandSender sender, Player target) {
+        Location lastCreated = plugin.getApi().getLastShopCreated(target);
         for (String s : getLangFile().getStringList("list.check-format")) {
             if (s.contains("%lastshop")) {
                 String result = s.replaceAll("%lastshop", "");
@@ -135,11 +154,53 @@ public class LangManager {
                 };
                 lastShopCreated_second.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, base));
                 lastShopCreated_first.addExtra(lastShopCreated_second);
+                // Setup the click event
+                if (lastCreated != null) {
+                    if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
+                        lastShopCreated_second.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tppos " + Math.round(lastCreated.getX()) + " " + Math.round(lastCreated.getY() + 2.5D) + " " + Math.round(lastCreated.getZ()) + " " + Math.round(lastCreated.getYaw()) + " " + Math.round(lastCreated.getPitch())));
+                    } else  {
+                        lastShopCreated_second.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/minecraft:tp " + sender.getName() + Math.round(lastCreated.getX()) + " " + Math.round(lastCreated.getY() + 2.5D) + " " + Math.round(lastCreated.getZ()) + " " + Math.round(lastCreated.getYaw()) + " " + Math.round(lastCreated.getPitch())));
+                    }
+                }
                 sender.spigot().sendMessage(lastShopCreated_first);
                 continue;
             }
             String result = s.replaceAll("%player", target.getName())
-                    .replaceAll("%uuid", target.getUniqueId().toString());
+                    .replaceAll("%uuid", target.getUniqueId().toString())
+                    .replaceAll("%shopcreated", String.valueOf(plugin.getApi().getShopCreated(target)))
+                    .replaceAll("%shoplimit", String.valueOf(plugin.getApi().getShopLimitValue(target)));
+            sender.sendMessage(colorized(result));
+        }
+    }
+
+    // Send the check format to specified player
+    public void sendCheckFormat(CommandSender sender, OfflinePlayer target) {
+        Location lastCreated = plugin.getApi().getLastShopCreated(target);
+        for (String s : getLangFile().getStringList("list.check-format")) {
+            if (s.contains("%lastshop")) {
+                String result = s.replaceAll("%lastshop", "");
+                TextComponent lastShopCreated_first = new TextComponent(colorized(result));
+                TextComponent lastShopCreated_second = new TextComponent(colorized(getMessage(MessageType.MISC_TELEPORT_BUTTON)));
+                BaseComponent[] base = new BaseComponent[] {
+                        new TextComponent(colorized(getMessage(MessageType.MISC_TELEPORT_BUTTON_HOVER)))
+                };
+                lastShopCreated_second.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, base));
+                lastShopCreated_first.addExtra(lastShopCreated_second);
+                // Setup the click event
+                if (lastCreated != null) {
+                    if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
+                        lastShopCreated_second.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tppos " + Math.round(lastCreated.getX()) + " " + Math.round(lastCreated.getY() + 2.5D) + " " + Math.round(lastCreated.getZ()) + " " + Math.round(lastCreated.getYaw()) + " " + Math.round(lastCreated.getPitch())));
+                    } else  {
+                        lastShopCreated_second.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/minecraft:tp " + sender.getName() + Math.round(lastCreated.getX()) + " " + Math.round(lastCreated.getY() + 2.5D) + " " + Math.round(lastCreated.getZ()) + " " + Math.round(lastCreated.getYaw()) + " " + Math.round(lastCreated.getPitch())));
+                    }
+                }
+                sender.spigot().sendMessage(lastShopCreated_first);
+                continue;
+            }
+            String result = s.replaceAll("%player", target.getName())
+                    .replaceAll("%uuid", target.getUniqueId().toString())
+                    .replaceAll("%shopcreated", String.valueOf(plugin.getApi().getShopCreated(target)))
+                    .replaceAll("%shoplimit", String.valueOf(plugin.getApi().getShopLimitValue(target)));
             sender.sendMessage(colorized(result));
         }
     }
