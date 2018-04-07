@@ -40,6 +40,9 @@ public class MainCommand implements CommandExecutor {
                     case "reload":
                         player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_RELOAD));
                         return true;
+                    case "reset":
+                        player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_RESET));
+                        return true;
                     default:
                         player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_UNKNOW_COMMAND));
                         return true;

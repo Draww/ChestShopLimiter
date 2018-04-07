@@ -19,7 +19,7 @@ public class ShopCreateListener implements Listener {
         this.main = main;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     public void onCreate(PreShopCreationEvent e) {
         if (!e.isCancelled()) {
             Player player = e.getPlayer();
@@ -32,13 +32,13 @@ public class ShopCreateListener implements Listener {
             if (player.hasPermission("csl.limit.unlimited")) {
                 return;
             }
+            if (e.getOutcome().equals(PreShopCreationEvent.CreationOutcome.NOT_ENOUGH_MONEY)) return;
+            main.getApi().addShopCreated(player, 1);
             if (main.getApi().getShopCreated(player) >= main.getApi().getShopLimitValue(player)) {
                 player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_LIMIT_REACHED, player));
                 e.setOutcome(PreShopCreationEvent.CreationOutcome.NO_PERMISSION);
                 return;
             }
-            e.setOutcome(PreShopCreationEvent.CreationOutcome.OTHER);
-            main.getApi().addShopCreated(player, 1);
             player.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED, player));
 
             // Add lastshop created

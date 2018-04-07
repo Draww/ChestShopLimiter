@@ -37,6 +37,12 @@ public class ConsoleCommand implements CommandExecutor {
                     case "check":
                         sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_CHECK));
                         return true;
+                    case "reload":
+                        sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_RELOAD));
+                        return true;
+                    case "reset":
+                        sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_RESET));
+                        return true;
                     default:
                         sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_UNKNOW_COMMAND));
                         return true;

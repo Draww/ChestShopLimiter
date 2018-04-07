@@ -37,6 +37,8 @@ error:
     command-unknown: 'Unknown command!. Please use &6/csl help! &for &6/cslc help'
     # Fired when the command usage is invalid at /csl reload <type>
     command-reload: 'Invalid usage!. Please use /csl reload <type>'
+    # Fired when the command usage is invalid at /csl reset <name>
+    command-reset: 'Invalid usage!. Please use /csl reset <name>'
   # Fired when LuckPerms cannot load user data
   cannot-load-data: 'There''s an error with luckperms!. Please contact server admin for help!'
   # Fired when the targeted player is never player on the server
@@ -49,6 +51,8 @@ list:
   help-message:
     - '&7[&c&l!&7]&e___________o0o &7[ &aChestShopLimiter &7] &eo0o___________&7[&c&l!&7]'
     - '  &6➟ &f/csl check <name> | Check the player''s info'
+    - '  &6➟ &f/csl reload <type> | Reload specified file'
+
   check-format:
     - '&7[&c&l!&7]&e___________o0o &7[ &a%player''s Info &7] &eo0o___________&7[&c&l!&7]'
     - '&r'

@@ -20,7 +20,7 @@ public class ShopDestroyListener implements Listener {
         this.main = main;
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler
     public void onDestroy(ShopDestroyedEvent e) {
         Player player = e.getDestroyer();
         if (player == null) return;

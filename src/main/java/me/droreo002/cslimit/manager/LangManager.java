@@ -48,6 +48,8 @@ public class LangManager {
 
     public String getMessage(MessageType type) {
         switch (type) {
+            case ERROR_INVALID_USAGE_RESET:
+                return colorized(plugin.getPrefix() + getLangFile().getString("error.usage.command-reset"));
             case ERROR_INVALID_USAGE_RELOAD:
                 return colorized(plugin.getPrefix() + getLangFile().getString("error.usage.command-reload"));
             case LANG_RELOADED:
