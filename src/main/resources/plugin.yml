@@ -1,7 +1,7 @@
 name: ChestShopLimiter
 version: 1.5
 main: me.droreo002.cslimit.ChestShopLimiter
-depend: [ChestShop]
+depend: [ChestShop, Essentials]
 softdepend: [LuckPerms]
 authors: [DrOreo002]
 

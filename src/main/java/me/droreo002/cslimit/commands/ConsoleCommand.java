@@ -1,5 +1,6 @@
 package me.droreo002.cslimit.commands;
 
+import com.earth2me.essentials.User;
 import me.droreo002.cslimit.ChestShopLimiter;
 import me.droreo002.cslimit.utils.MessageType;
 import org.bukkit.Bukkit;
@@ -59,11 +60,12 @@ public class ConsoleCommand implements CommandExecutor {
                     String name = args[1];
                     Player target = Bukkit.getPlayerExact(name);
                     if (target == null) {
-                        OfflinePlayer off = Bukkit.getOfflinePlayer(name);
-                        if (!off.hasPlayedBefore()) {
+                        User user = main.getEssentials().getUser(name);
+                        if (user == null) {
                             sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
                             return true;
                         }
+                        OfflinePlayer off = Bukkit.getOfflinePlayer(user.getConfigUUID());
                         main.getLangManager().sendCheckFormat(sender, off);
                         return true;
                     }
@@ -82,11 +84,12 @@ public class ConsoleCommand implements CommandExecutor {
                     String name = args[1];
                     Player target = Bukkit.getPlayerExact(name);
                     if (target == null) {
-                        OfflinePlayer off = Bukkit.getOfflinePlayer(name);
-                        if (!off.hasPlayedBefore()) {
+                        User user = main.getEssentials().getUser(name);
+                        if (user == null) {
                             sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
                             return true;
                         }
+                        OfflinePlayer off = Bukkit.getOfflinePlayer(user.getConfigUUID());
                         main.getApi().resetShopCreated(off);
                         sender.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET, off.getPlayer()));
                         return true;

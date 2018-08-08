@@ -14,27 +14,33 @@ RefundOnShopRemove: true
 # btw, using luckperms is much better and you'll got 0 bugs. But, this is by default will be set to false
 LuckPermsSupport: false
 
+# If this enabled, the plugin will collect some information abot the server. If you don't want it to happens you can set this to 'false'
+# it is recommended to not set it to false because it helps the dev to improve the plugin and know how much server using the plugin
+use-bstats: true
+
 # Now'll explain you how the limit works. Sorry 4 my bad english
 # Shop limit will be needed if the player that is checked didn't have the csl.limit.unlimited permission.
 ShopLimit:
   # You can name it whatever you want to. The permission will be csl.limit.<name>
   # It is recommended to have the limit below 10, because it will create lags when the player join the server for the first time, when the plugin installed
-  # Btw, it is okay to delete this default config key.
-  # Oh and, it is recommended to only edit the value ONCE!. Because it will not reset the shop limit value on the player that joined before the change!
-  # this will be fixed in the next update.
+  # Btw DO NOT delete the default key if the 'force-default' is enabled!
   default:
     limit: 5
   vip:
     limit: 10
   mvp:
     limit: 20
+  # This will be needed to set to true if you want to make the player use the default limit if they don't have any permission for shop limit (csl.limit.<name>)
+  force-default: true
 
 # Will be used if you have LuckPermsSupport enabled!.
 # WARNING PLEASE READ ALL OF THE COMMENT BELOW IF YOU WANT TO USE LuckPerms SUPPORT!
 ShopLimitLuckperms:
 
-  # Please name it exactly the SAME name on the luckperms group. The usage for the permission will be csl.limit.<group>
+  # Please name it exactly the SAME name on the luckperms group!
   # You can rename this, I use iron, gold, diamond because that is the group that I use for my test server
+  # so you may ask how this thing work. Well its simple, it just check what group that the player is on. And then set the limit for it,
+  # simple as that. You don't need other permission things for this
   iron:
     limit: 10
   gold:

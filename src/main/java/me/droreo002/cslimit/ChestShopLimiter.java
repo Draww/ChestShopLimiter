@@ -1,5 +1,6 @@
 package me.droreo002.cslimit;
 
+import com.earth2me.essentials.Essentials;
 import me.droreo002.cslimit.api.ChestSL;
 import me.droreo002.cslimit.commands.ConsoleCommand;
 import me.droreo002.cslimit.commands.MainCommand;
@@ -11,6 +12,7 @@ import me.droreo002.cslimit.listener.ShopCreateListener;
 import me.droreo002.cslimit.listener.ShopDestroyListener;
 import me.droreo002.cslimit.manager.ConfigManager;
 import me.droreo002.cslimit.manager.LangManager;
+import me.droreo002.cslimit.metrics.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,6 +24,8 @@ public class ChestShopLimiter extends JavaPlugin {
     private static ChestSL api;
     private LangManager langManager;
     private HookManager hookManager;
+    private Essentials essentials;
+    private Metrics met;
 
     @Override
     public void onEnable() {
@@ -34,6 +38,27 @@ public class ChestShopLimiter extends JavaPlugin {
         plugin = this;
         api = ChestSL.getApi(this);
         hookManager = HookManager.get();
+        if (configManager.getConfig().isSet("use-bstats")) {
+            System.out.print("[CSL] Connecting to bstats");
+            if (configManager.getConfig().getBoolean("use-bstats")) {
+                System.out.print("[CSL] bstats connected!");
+                met = new Metrics(this);
+            } else {
+                System.out.print("[CSL] bstats is disabled!. Disconnecting from the server...");
+                met = null;
+            }
+        } else {
+            System.out.print("[CSL] Connecting to bstats");
+            configManager.getConfig().set("use-bstats", true);
+            configManager.saveConfig();
+            if (configManager.getConfig().getBoolean("use-bstats")) {
+                System.out.print("[CSL] bstats connected!");
+                met = new Metrics(this);
+            } else {
+                System.out.print("[CSL] bstats is disabled!. Disconnecting from the server...");
+                met = null;
+            }
+        }
 
         // Use this to register command and stuff
 
@@ -46,7 +71,9 @@ public class ChestShopLimiter extends JavaPlugin {
 
         // Dependency check (Hard depend)
         if (Bukkit.getPluginManager().getPlugin("ChestShop") == null) {
+            getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
             getLogger().warning("WARNING. PLUGIN WILL BE DISABLED BECAUSE CHESTSHOP IS NOT FOUND!");
+            getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -56,12 +83,26 @@ public class ChestShopLimiter extends JavaPlugin {
             if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null) {
                 // Set hook manager to true
                 hookManager.setLuckPermsHooked(true);
+                getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
                 getLogger().info("Successfully hooked to luckperms!");
+                getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
             } else {
                 Bukkit.getPluginManager().disablePlugin(this);
+                getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
                 getLogger().warning("CANNOT FIND LUCKPERMS. DISABLE LuckPermsSupport ON CONFIG.YML NOW!");
+                getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
                 return;
             }
+        }
+        // Dependency check (Hard depend)
+        if (Bukkit.getPluginManager().getPlugin("Essentials") == null) {
+            getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
+            getLogger().info("  ➟ ChestShopLimiter+ need Essentials or EssentialsX to work!. Please install it on your server!");
+            getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
+            Bukkit.getPluginManager().disablePlugin(this);
+        } else {
+            essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+            getLogger().info("Successfully hooked to Essentials!");
         }
 
         // Final (Will ran if dependency check is passed)
@@ -100,11 +141,19 @@ public class ChestShopLimiter extends JavaPlugin {
         return langManager;
     }
 
+    public Essentials getEssentials() {
+        return essentials;
+    }
+
     public static ChestShopLimiter get() {
         return plugin;
     }
 
     public HookManager getHookManager() {
         return hookManager;
+    }
+
+    public Metrics getMet() {
+        return met;
     }
 }

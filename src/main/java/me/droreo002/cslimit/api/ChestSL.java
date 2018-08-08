@@ -117,10 +117,10 @@ public class ChestSL {
                 player.sendMessage(main.getPrefix() + main.getLangManager().getMessage(MessageType.ERROR_CANNOT_LOAD_DATA));
                 return;
             }
-            if (data.isSet("normalPlayerPermission")) {
+            if (data.isSet("Info.normalPlayerPermission")) {
                 data.set("Info.normalPlayerPermission", null);
             }
-            if (!data.isSet("LuckPermsPlayerPermission")) {
+            if (!data.isSet("Info.LuckPermsPlayerPermission")) {
                 data.set("Info.LuckPermsPlayerPermission", "firstTime");
             }
             data.save();
@@ -128,10 +128,25 @@ public class ChestSL {
             for (String s : cs.getKeys(false)) {
                 if (s.equalsIgnoreCase(user.getPrimaryGroup())) {
                     if (currPermission.equalsIgnoreCase(s)) {
+                        /*
+                        Make a checker so it wont be laggy
+                         */
+                        if (data.isSet("Info.shopLimit")) {
+                            int shopLimit = main.getConfigManager().getConfig().getInt("ShopLimitLuckperms." + s + ".limit");
+                            int shopLimitPlayer = data.getInt("Info.shopLimit");
+                            /*
+                            That mean the shop limit is different than the default one
+                             */
+                            if (shopLimit != shopLimitPlayer) {
+                                data.set("Info.shopLimit", shopLimit);
+                                data.save();
+                            }
+                        }
                         return;
                     }
                     data.set("Info.shopLimit", main.getConfigManager().getConfig().getInt("ShopLimitLuckperms." + s + ".limit"));
                     data.set("Info.LuckPermsPlayerPermission", s);
+                    break;
                 }
             }
             data.save();
@@ -149,13 +164,37 @@ public class ChestSL {
         data.save();
         String currPermission = data.getString("Info.normalPlayerPermission");
         String permission = "csl.limit.";
+        int hasPermissionCount = 0;
         for (String s : cs.getKeys(false)) {
             if (player.hasPermission(permission + s)) {
                 if (currPermission.equalsIgnoreCase(s)) {
+                    /*
+                        Make a checker so it wont be laggy
+                         */
+                    if (data.isSet("Info.shopLimit")) {
+                        int shopLimit = main.getConfigManager().getConfig().getInt("ShopLimitLuckperms." + s + ".limit");
+                        int shopLimitPlayer = data.getInt("Info.shopLimit");
+                            /*
+                            That mean the shop limit is different than the default one
+                             */
+                        if (shopLimit != shopLimitPlayer) {
+                            data.set("Info.shopLimit", shopLimit);
+                            data.save();
+                        }
+                    }
                     return;
                 }
                 data.set("Info.shopLimit", main.getConfigManager().getConfig().getInt("ShopLimit." + s + ".limit"));
                 data.set("Info.normalPlayerPermission", s);
+                hasPermissionCount++;
+                break;
+            }
+        }
+        // That mean the player didn't have any permission on the shop list. Then use the default limit
+        if (hasPermissionCount == 0) {
+            if (main.getConfigManager().getConfig().getBoolean("ShopLimit.force-default")) {
+                data.set("Info.shopLimit", main.getConfigManager().getConfig().getInt("ShopLimit.default.limit"));
+                data.set("Info.normalPlayerPermission", "default");
             }
         }
         data.save();
