@@ -83,6 +83,7 @@ public class LangManager {
             case MISC_TELEPORT_BUTTON_HOVER:
                 return colorized(getLangFile().getString("misc.teleport-button-hover-text"));
         }
+        
         return "Error on getting message. Please contact Dev!";
     }
 
@@ -119,39 +120,37 @@ public class LangManager {
         switch (type) {
             case HELP:
                 // Help has no placeholder
-                List<String> help = new ArrayList<>();
                 for (String s : getLangFile().getStringList("list.help-message")) {
-                help.add(colorized(s));
-            }
-            return help;
-        }
-        return temp;
-    }
-
-    // Get the checkformat for online player
-    /*
-    public void sendCheckFormat(Player player, Player target) {
-        for (String s : getLangFile().getStringList("list.check-format")) {
-            if (s.contains("%lastshop")) {
-                String result = s.replaceAll("%lastshop", "");
-                TextComponent lastShopCreated_first = new TextComponent(colorized(result));
-                TextComponent lastShopCreated_second = new TextComponent(colorized(getMessage(MessageType.MISC_TELEPORT_BUTTON)));
-                BaseComponent[] base = new BaseComponent[] {
-                        new TextComponent("Hello World")
-                };
-                lastShopCreated_second.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, base));
-                lastShopCreated_first.addExtra(lastShopCreated_second);
-                player.spigot().sendMessage(lastShopCreated_first);
-                continue;
-            }
-            String result = s.replaceAll("%player", player.getName())
-                    .replaceAll("%uuid", player.getUniqueId().toString());
-            player.sendMessage(colorized(result));
+                    temp.add(colorized(s));
+                }
+            return temp;
+            default:
+                temp.add("Error. Invalid message!, please contact the Dev!");
+                return temp;
         }
     }
-    */
 
-    // Send the check format to specified player
+    // Used if the list will contains some placeholder for player.
+    public List<String> getMessageList(Player player, MessageType type) {
+        // If nothing is returned. It will use this
+        List<String> temp = new ArrayList<>();
+        temp.add("Error on getting message. Please contact Dev!");
+        switch (type) {
+            case PLAYER_STATUS:
+                for (String s : getLangFile().getStringList("list.player-status")) {
+                    String toAdd = s
+                            .replaceAll("%shopcreated", String.valueOf(ChestShopLimiter.get().getApi().getShopLimitValue(player)))
+                            .replaceAll("%shoplimit", String.valueOf(ChestShopLimiter.get().getApi().getShopCreated(player)));
+                    temp.add(colorized(toAdd));
+                }
+                return temp;
+            default:
+                temp.add("Error. Invalid message!, please contact the Dev!");
+                return temp;
+        }
+    }
+
+    // Send the check format to specified player (We use seperated method because this will contains a lot of codes)
     public void sendCheckFormat(CommandSender sender, Player target) {
         Location lastCreated = plugin.getApi().getLastShopCreated(target);
         for (String s : getLangFile().getStringList("list.check-format")) {
@@ -183,7 +182,7 @@ public class LangManager {
         }
     }
 
-    // Send the check format to specified player
+    // Send the check format to specified player (We use seperated method because this will contains a lot of codes)
     public void sendCheckFormat(CommandSender sender, OfflinePlayer target) {
         Location lastCreated = plugin.getApi().getLastShopCreated(target);
         for (String s : getLangFile().getStringList("list.check-format")) {

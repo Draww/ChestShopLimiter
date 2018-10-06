@@ -9,15 +9,30 @@ Language: 'EN_lang' # + yml
 
 # Set this to true if you want to decrease the shopCreated value on player's data on ShopRemove. The refunded value will always be 1
 RefundOnShopRemove: true
+# Set this to true if you want to make a player that has unlimited shop permission to get a refund when he/she break the shop
+RefundOnShopRemove-Unlimited: false
 
 # Limit for groups. You can enable "LuckPermsSupport" if you want to set the limit with luckperms group instead
 # btw, using luckperms is much better and you'll got 0 bugs. But, this is by default will be set to false
 LuckPermsSupport: false
 
-# If this enabled, the plugin will collect some information abot the server. If you don't want it to happens you can set this to 'false'
+# If this enabled, the plugin will collect some information about the server. If you don't want it to happens you can set this to 'false'
 # it is recommended to not set it to false because it helps the dev to improve the plugin and know how much server using the plugin
 use-bstats: true
 
+# This is the sound of "success" and "failure" when using a command. Required to reload / restart the server if you made changes
+# for the sound list, you can see it here https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+CommandSound:
+  success:
+    volume: 10
+    pitch: 0
+    sound: BLOCK_NOTE_PLING
+  failure:
+    volume: 10
+    pitch: 1
+    sound: ENTITY_BLAZE_DEATH
+
+# If this enabled
 # Now'll explain you how the limit works. Sorry 4 my bad english
 # Shop limit will be needed if the player that is checked didn't have the csl.limit.unlimited permission.
 ShopLimit:

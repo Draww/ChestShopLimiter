@@ -50,9 +50,20 @@ error:
 list:
   help-message:
     - '&7[&c&l!&7]&e___________o0o &7[ &aChestShopLimiter &7] &eo0o___________&7[&c&l!&7]'
-    - '  &6➟ &f/csl check <name> | Check the player''s info'
-    - '  &6➟ &f/csl reload <type> | Reload specified file'
+    - ''
+    - '  &f➟ &6/csl check <name>  &f| Check the player''s info'
+    - '  &f➟ &6/csl reload <type> &f| Reload specified file / modules'
+    - '  &f➟ &6/csl reset <name>  &f| Reset the player data back to default'
+    - '  &f➟ &6/csl status        &f| Check your current status'
+    - ''
+    - '&7[&c&l!&7]&e___________o0o &7[ &aChestShopLimiter &7] &eo0o___________&7[&c&l!&7]'
+    - ''
+    - '&6TIPS &f: You can also access the console command via console using &6/cslc &fcommand!'
 
+  #Available placeholder
+  #- %shopcreated
+  #- %shoplimit
+  #- %lastshop
   check-format:
     - '&7[&c&l!&7]&e___________o0o &7[ &a%player''s Info &7] &eo0o___________&7[&c&l!&7]'
     - '&r'
@@ -62,3 +73,16 @@ list:
     - '&6➟ &fLatest Shop Created : &c%lastshop'
     - '&r'
     - '&7[&c&l!&7]&e___________o0o &7[ &a%player''s Info &7] &eo0o___________&7[&c&l!&7]'
+
+  #Available placeholder
+  #- %shopcreated
+  #- %shoplimit
+  player-status:
+    - '&7[&c&l!&7]&e___________o0o &7[ &aYour Status &7] &eo0o___________&7[&c&l!&7]'
+    - '&r'
+    - '&6➟ &fShop Created Amount : &c%shopcreated'
+    - '&6➟ &fShop Limit Amount : &c%shoplimit'
+    - '&r'
+    - '&7[&c&l!&7]&e___________o0o &7[ &aYour Status &7] &eo0o___________&7[&c&l!&7]'
+    - '&r'
+    - '&6TIPS : &fBuy a new rank if you want to increase your shop limit!'

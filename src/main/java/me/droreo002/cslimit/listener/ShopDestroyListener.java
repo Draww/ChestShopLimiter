@@ -26,7 +26,9 @@ public class ShopDestroyListener implements Listener {
         if (player == null) return;
         String[] lines = e.getSign().getLines();
         if (ChestShopSign.isAdminShop(lines[0])) return;
-        if (player.hasPermission("csl.limit.unlimited")) return;
+        if (!main.getConfigManager().getConfig().getBoolean("RefundOnShopRemove-Unlimited") && player.hasPermission("csl.limit.unlimited")) {
+            return;
+        }
         if (main.getConfigManager().getConfig().getBoolean("RefundOnShopRemove")) {
             PlayerData data = PlayerData.getConfig(main, player);
             main.getApi().decreaseShopCreated(player, 1);

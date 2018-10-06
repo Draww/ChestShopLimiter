@@ -1,5 +1,5 @@
 name: ChestShopLimiter
-version: 1.6
+version: 1.7
 main: me.droreo002.cslimit.ChestShopLimiter
 depend: [ChestShop, Essentials]
 softdepend: [LuckPerms]
@@ -20,7 +20,12 @@ permissions:
       csl.admin.check: true
       csl.admin.teleport: true
       csl.admin.reset: true
+  csl.player.*:
+    children:
+      csl.player.checkstatus: true
   csl.limit.unlimited:
     default: op
   csl.admin.check:
+    default: op
+  csl.player.checkstatus:
     default: op
