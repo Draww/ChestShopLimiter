@@ -80,11 +80,5 @@
             <version>4.1</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.acrobot.chestshop</groupId>
-            <artifactId>chestshop</artifactId>
-            <version>3.9.0</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 </project>
