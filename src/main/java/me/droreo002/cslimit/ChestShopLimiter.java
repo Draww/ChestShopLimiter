@@ -111,6 +111,9 @@ public class ChestShopLimiter extends JavaPlugin {
         getLogger().info("  ➟ ChestShopLimiter+ has been enabled!");
         getLogger().info("  ➟ Version : " + getDescription().getVersion());
         getLogger().info("  ➟ Author : " + getDescription().getAuthors());
+        getLogger().info(" ");
+        getLogger().info("Seems like you're running on ChestShopLimiter version 1.13. Please note that");
+        getLogger().info("is not that stable!, prepare for massive bugs!. Please report if you find any!");
         getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
 
         // ChestShopLimiter + : Made by @DrOreo002
