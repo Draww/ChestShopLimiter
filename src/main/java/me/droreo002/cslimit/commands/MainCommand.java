@@ -42,7 +42,7 @@ public class MainCommand implements CommandExecutor {
             fail = Sound.valueOf(s2);
         } catch (Exception e) {
             Bukkit.getPluginManager().disablePlugin(main);
-            Bukkit.getLogger().warning("SOUND TYPE WITH THE NAME OF (" + s1 + " and " + s2 + ") PLUGIN WILL BE DISABLED!");
+            Bukkit.getLogger().warning("SOUND TYPE WITH THE NAME OF (" + s1 + " or " + s2 + ") CANNOT BE FOUND!, PLUGIN WILL BE DISABLED!");
         }
 
         suc_volume = config.getInt("CommandSound.success.volume");

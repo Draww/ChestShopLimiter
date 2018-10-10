@@ -61,7 +61,6 @@ public class ChestShopLimiter extends JavaPlugin {
         }
 
         // Use this to register command and stuff
-
         Bukkit.getPluginCommand("chestshoplimiter").setExecutor(new MainCommand(this));
         Bukkit.getPluginCommand("chestshoplimiterconsole").setExecutor(new ConsoleCommand(this));
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);

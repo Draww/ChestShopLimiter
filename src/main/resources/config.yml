@@ -26,7 +26,7 @@ CommandSound:
   success:
     volume: 10
     pitch: 0
-    sound: BLOCK_NOTE_PLING
+    sound: BLOCK_NOTE_BLOCK_PLING
   failure:
     volume: 10
     pitch: 1
