@@ -62,6 +62,7 @@ public class ChestShopLimiter extends JavaPlugin {
 
         // Use this to register command and stuff
         Bukkit.getPluginCommand("chestshoplimiter").setExecutor(new MainCommand(this));
+        Bukkit.getPluginCommand("chestshoplimiter").setTabCompleter(new MainCommand(this));
         Bukkit.getPluginCommand("chestshoplimiterconsole").setExecutor(new ConsoleCommand(this));
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ShopCreateListener(this), this);
@@ -112,7 +113,7 @@ public class ChestShopLimiter extends JavaPlugin {
         getLogger().info("  ➟ Author : " + getDescription().getAuthors());
         getLogger().info(" ");
         getLogger().info("Seems like you're running on ChestShopLimiter version 1.13. Please note that");
-        getLogger().info("is not that stable!, prepare for massive bugs!. Please report if you find any!");
+        getLogger().info("this is not a stable build!, prepare for massive bugs!. Please report if you find any!");
         getLogger().info("[ ! ] ___o0o [ ChestShopLimiter ] o0o___ [ ! ]");
 
         // ChestShopLimiter + : Made by @DrOreo002

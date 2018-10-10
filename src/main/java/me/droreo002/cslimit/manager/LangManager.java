@@ -48,6 +48,8 @@ public class LangManager {
 
     public String getMessage(MessageType type) {
         switch (type) {
+            case ERROR_INVALID_USAGE_SET_DATA:
+                return colorized(plugin.getPrefix() + getLangFile().getStringList("error.usage.command-save-data"));
             case ERROR_INVALID_USAGE_RESET:
                 return colorized(plugin.getPrefix() + getLangFile().getString("error.usage.command-reset"));
             case ERROR_INVALID_USAGE_RELOAD:
@@ -90,10 +92,13 @@ public class LangManager {
     // Used if the lang contains variable
     public String getMessage(MessageType type, Player player) {
         switch (type) {
+            case PLAYER_DATA_SAVED:
+                return plugin.getPrefix() + colorized(getLangFile().getString("normal.data-save-success"))
+                        .replaceAll("%player", player.getName());
             case SHOP_CREATED:
                 return plugin.getPrefix() + colorized(getLangFile().getString("normal.shop-created")
-                .replaceAll("%created", Integer.toString(plugin.getApi().getShopCreated(player)))
-                .replaceAll("%max", Integer.toString(plugin.getApi().getShopLimitValue(player))));
+                        .replaceAll("%created", Integer.toString(plugin.getApi().getShopCreated(player)))
+                        .replaceAll("%max", Integer.toString(plugin.getApi().getShopLimitValue(player))));
             case ERROR_LIMIT_REACHED:
                 return plugin.getPrefix() + colorized(getLangFile().getString("error.limit-reached")
                         .replaceAll("%created", Integer.toString(plugin.getApi().getShopCreated(player)))
@@ -104,10 +109,39 @@ public class LangManager {
                         .replaceAll("%max", Integer.toString(plugin.getApi().getShopLimitValue(player))));
             case SHOP_CREATED_RESET:
                 return colorized(plugin.getPrefix() + getLangFile().getString("normal.shop-created-reset")
-                .replaceAll("%player", player.getName()));
+                        .replaceAll("%player", player.getName()));
             case SHOP_CREATED_RESET_OTHER:
                 return colorized(plugin.getPrefix() + getLangFile().getString("normal.shop-created-reset-other")
-                .replaceAll("%player", player.getName()));
+                        .replaceAll("%player", player.getName()));
+            default:
+                return getMessage(type);
+        }
+    }
+
+    // Used if the lang contains variable (OfflinePlayer)
+    public String getMessage(MessageType type, OfflinePlayer player) {
+        switch (type) {
+            case PLAYER_DATA_SAVED:
+                return plugin.getPrefix() + colorized(getLangFile().getString("normal.data-save-success"))
+                        .replaceAll("%player", player.getName());
+            case SHOP_CREATED:
+                return plugin.getPrefix() + colorized(getLangFile().getString("normal.shop-created")
+                        .replaceAll("%created", Integer.toString(plugin.getApi().getShopCreated(player)))
+                        .replaceAll("%max", Integer.toString(plugin.getApi().getShopLimitValue(player))));
+            case ERROR_LIMIT_REACHED:
+                return plugin.getPrefix() + colorized(getLangFile().getString("error.limit-reached")
+                        .replaceAll("%created", Integer.toString(plugin.getApi().getShopCreated(player)))
+                        .replaceAll("%max", Integer.toString(plugin.getApi().getShopLimitValue(player))));
+            case SHOP_REMOVED:
+                return plugin.getPrefix() + colorized(getLangFile().getString("normal.shop-removed")
+                        .replaceAll("%created", Integer.toString(plugin.getApi().getShopCreated(player)))
+                        .replaceAll("%max", Integer.toString(plugin.getApi().getShopLimitValue(player))));
+            case SHOP_CREATED_RESET:
+                return colorized(plugin.getPrefix() + getLangFile().getString("normal.shop-created-reset")
+                        .replaceAll("%player", player.getName()));
+            case SHOP_CREATED_RESET_OTHER:
+                return colorized(plugin.getPrefix() + getLangFile().getString("normal.shop-created-reset-other")
+                        .replaceAll("%player", player.getName()));
             default:
                 return getMessage(type);
         }

@@ -22,6 +22,8 @@ normal:
   shop-created-reset: 'You''ve setted %player''s shop created value into 0'
   # Fured when the player got his shop created reset ed
   shop-created-reset-other: '%player , has set your shop created value into 0'
+  # Fired when player successfully saved the specified player's data
+  data-save-success: 'Data for player with the name of &c%player &fhas been saved!'
 
 misc:
   # Fired when the teleport button (button on chat) is used.
@@ -39,6 +41,8 @@ error:
     command-reload: 'Invalid usage!. Please use /csl reload <type>'
     # Fired when the command usage is invalid at /csl reset <name>
     command-reset: 'Invalid usage!. Please use /csl reset <name>'
+    # Fired when the command usage is invalid at /csl save-data <name>
+    command-save-data: 'Invalid usage!. Please use /csl save-data <name>'
   # Fired when LuckPerms cannot load user data
   cannot-load-data: 'There''s an error with luckperms!. Please contact server admin for help!'
   # Fired when the targeted player is never player on the server

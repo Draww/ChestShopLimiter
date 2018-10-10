@@ -1,5 +1,5 @@
 name: ChestShopLimiter
-version: 1.7
+version: 1.8
 main: me.droreo002.cslimit.ChestShopLimiter
 api-version: 1.13
 depend: [ChestShop, Essentials]
@@ -21,6 +21,7 @@ permissions:
       csl.admin.check: true
       csl.admin.teleport: true
       csl.admin.reset: true
+      csl.admin.save-data: true
   csl.player.*:
     children:
       csl.player.checkstatus: true
@@ -29,4 +30,6 @@ permissions:
   csl.admin.check:
     default: op
   csl.player.checkstatus:
+    default: op
+  csl.admin.save-data:
     default: op

@@ -3,6 +3,7 @@ package me.droreo002.cslimit.commands;
 import com.earth2me.essentials.User;
 import me.droreo002.cslimit.ChestShopLimiter;
 import me.droreo002.cslimit.manager.LangManager;
+import me.droreo002.cslimit.manager.PlayerData;
 import me.droreo002.cslimit.utils.MessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -10,11 +11,16 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 
-public class MainCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class MainCommand implements CommandExecutor, TabCompleter {
 
     private ChestShopLimiter main;
 
@@ -30,6 +36,10 @@ public class MainCommand implements CommandExecutor {
     private float suc_pitch;
     private float fail_volume;
     private float fail_pitch;
+    /*
+    Variables
+     */
+    private Collection<String> completions = new ArrayList<>();
 
     public MainCommand(ChestShopLimiter main) {
         this.main = main;
@@ -50,6 +60,16 @@ public class MainCommand implements CommandExecutor {
 
         fail_volume = config.getInt("CommandSound.failure.volume");
         fail_pitch = config.getInt("CommandSound.failure.pitch");
+
+        /*
+        Tabs
+         */
+        completions.add("help");
+        completions.add("check");
+        completions.add("reload");
+        completions.add("status");
+        completions.add("reset");
+        completions.add("save-data");
     }
 
     @SuppressWarnings("deprecation")
@@ -92,6 +112,10 @@ public class MainCommand implements CommandExecutor {
                         playFailure(player);
                         player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_RESET));
                         return true;
+                    case "save-data":
+                        playFailure(player);
+                        player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_INVALID_USAGE_SET_DATA));
+                        return true;
                     default:
                         playFailure(player);
                         player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_UNKNOW_COMMAND));
@@ -101,6 +125,39 @@ public class MainCommand implements CommandExecutor {
 
             // Common commands (Ignore the warning. If you use IntelliJ)
             if (args.length > 1) {
+                if (args[0].equalsIgnoreCase("save-data")) {
+                    if (!player.hasPermission("csl.admin.save-data")) {
+                        playFailure(player);
+                        player.sendMessage(main.getLangManager().getMessage(MessageType.NO_PERMISSION));
+                        return true;
+                    }
+                    if (args.length > 2) {
+                        playFailure(player);
+                        player.sendMessage(main.getLangManager().getMessage(MessageType.TOO_MUCH_ARGS));
+                        return true;
+                    }
+                    String name = args[1];
+                    Player target = Bukkit.getPlayerExact(name);
+                    if (target == null) {
+                        User user = main.getEssentials().getUser(name);
+                        if (user == null) {
+                            playFailure(player);
+                            player.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
+                            return true;
+                        }
+                        playSuccess(player);
+                        OfflinePlayer off = Bukkit.getOfflinePlayer(user.getConfigUUID());
+                        PlayerData.remove(off);
+                        PlayerData.getConfig(main, off);
+                        player.sendMessage(main.getLangManager().getMessage(MessageType.PLAYER_DATA_SAVED, off));
+                        return true;
+                    }
+                    playSuccess(player);
+                    player.sendMessage(main.getLangManager().getMessage(MessageType.PLAYER_DATA_SAVED, target));
+                    PlayerData.remove(target);
+                    PlayerData.getConfig(main, target);
+                    return true;
+                }
                 if (args[0].equalsIgnoreCase("check")) {
                     if (!player.hasPermission("csl.admin.check")) {
                         playFailure(player);
@@ -207,4 +264,36 @@ public class MainCommand implements CommandExecutor {
     private void playFailure(Player player) {
         player.playSound(player.getLocation(), fail, fail_volume, fail_pitch);
     }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length == 1) {
+            return createReturnList(new ArrayList<>(completions), args[0]);
+        }
+        else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("reload")) {
+                List<String> toReturn = new ArrayList<>();
+                toReturn.add("config");
+                toReturn.add("lang");
+                return createReturnList(toReturn, args[1]);
+            }
+            return null;
+        }
+        else {
+            return null;
+        }
+    }
+
+    private List<String> createReturnList(List<String> list, String string) {
+        if (string.equals("")) return list;
+
+        List<String> returnList = new ArrayList<>();
+        for (String item : list) {
+            if (item.toLowerCase().startsWith(string.toLowerCase())) {
+                returnList.add(item);
+            }
+        }
+        return returnList;
+    }
+
 }
