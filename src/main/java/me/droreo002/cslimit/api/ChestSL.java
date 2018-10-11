@@ -1,11 +1,9 @@
 package me.droreo002.cslimit.api;
 
 import me.droreo002.cslimit.ChestShopLimiter;
-import me.droreo002.cslimit.hook.LuckPermsHook;
+import me.droreo002.cslimit.hook.objects.LuckPermsHook;
 import me.droreo002.cslimit.manager.PlayerData;
 import me.droreo002.cslimit.utils.MessageType;
-import me.lucko.luckperms.api.User;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -111,45 +109,8 @@ public class ChestSL {
         }
         // If luckperms hooked (Code Status : 100% Working)
         if (main.getHookManager().isLuckPermsHooked()) {
-            ConfigurationSection cs = main.getConfigManager().getConfig().getConfigurationSection("ShopLimitLuckperms");
-            User user = LuckPermsHook.get().getLuckPerms().getUserManager().getUser(player.getUniqueId());
-            if (user == null) {
-                player.sendMessage(main.getPrefix() + main.getLangManager().getMessage(MessageType.ERROR_CANNOT_LOAD_DATA));
-                return;
-            }
-            if (data.isSet("Info.normalPlayerPermission")) {
-                data.set("Info.normalPlayerPermission", null);
-            }
-            if (!data.isSet("Info.LuckPermsPlayerPermission")) {
-                data.set("Info.LuckPermsPlayerPermission", "firstTime");
-            }
-            data.save();
-            String currPermission = data.getString("Info.LuckPermsPlayerPermission");
-            for (String s : cs.getKeys(false)) {
-                if (s.equalsIgnoreCase(user.getPrimaryGroup())) {
-                    if (currPermission.equalsIgnoreCase(s)) {
-                        /*
-                        Make a checker so it wont be laggy
-                         */
-                        if (data.isSet("Info.shopLimit")) {
-                            int shopLimit = main.getConfigManager().getConfig().getInt("ShopLimitLuckperms." + s + ".limit");
-                            int shopLimitPlayer = data.getInt("Info.shopLimit");
-                            /*
-                            That mean the shop limit is different than the default one
-                             */
-                            if (shopLimit != shopLimitPlayer) {
-                                data.set("Info.shopLimit", shopLimit);
-                                data.save();
-                            }
-                        }
-                        return;
-                    }
-                    data.set("Info.shopLimit", main.getConfigManager().getConfig().getInt("ShopLimitLuckperms." + s + ".limit"));
-                    data.set("Info.LuckPermsPlayerPermission", s);
-                    break;
-                }
-            }
-            data.save();
+            LuckPermsHook hook = (LuckPermsHook) main.getHookManager().getHookMap().get("LuckPerms");
+            hook.setupShopLimitValue(data, player, main);
             return;
         }
 

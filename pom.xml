@@ -80,5 +80,19 @@
             <version>4.1</version>
             <scope>provided</scope>
         </dependency>
+        <!-- This is a local repository. Its installed manually using the mvn install file command -->
+        <dependency>
+            <groupId>com.Zrips</groupId>
+            <artifactId>CMI</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- This is a local repository. Its installed manually using the mvn install file command -->
+        <dependency>
+            <groupId>com.earth2me</groupId>
+            <artifactId>essentials</artifactId>
+            <version>2.15.0.52</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

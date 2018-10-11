@@ -48,8 +48,10 @@ public class LangManager {
 
     public String getMessage(MessageType type) {
         switch (type) {
+            case ERROR_INVALID_USAGE_STATUS:
+                return colorized(plugin.getPrefix() + getLangFile().getString("error.usage.command-status"));
             case ERROR_INVALID_USAGE_SET_DATA:
-                return colorized(plugin.getPrefix() + getLangFile().getStringList("error.usage.command-save-data"));
+                return colorized(plugin.getPrefix() + getLangFile().getString("error.usage.command-save-data"));
             case ERROR_INVALID_USAGE_RESET:
                 return colorized(plugin.getPrefix() + getLangFile().getString("error.usage.command-reset"));
             case ERROR_INVALID_USAGE_RELOAD:

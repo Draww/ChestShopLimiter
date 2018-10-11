@@ -12,9 +12,13 @@ RefundOnShopRemove: true
 # Set this to true if you want to make a player that has unlimited shop permission to get a refund when he/she break the shop
 RefundOnShopRemove-Unlimited: false
 
-# Limit for groups. You can enable "LuckPermsSupport" if you want to set the limit with luckperms group instead
-# btw, using luckperms is much better and you'll got 0 bugs. But, this is by default will be set to false
-LuckPermsSupport: false
+# This is all the dependency things for the plugin. If it enabled the plugin will try to hook to that plugin.
+#
+Dependency:
+  LuckPerms: true
+  # For Essentials and CMI you can only enable 1. So choose it wisely
+  Essentials: false
+  CMI: true
 
 # If this enabled, the plugin will collect some information about the server. If you don't want it to happens you can set this to 'false'
 # it is recommended to not set it to false because it helps the dev to improve the plugin and know how much server using the plugin
@@ -48,7 +52,7 @@ ShopLimit:
   # This will be needed to set to true if you want to make the player use the default limit if they don't have any permission for shop limit (csl.limit.<name>)
   force-default: true
 
-# Will be used if you have LuckPermsSupport enabled!.
+# Will be used if you have Dependency.LuckPerms enabled!.
 # WARNING PLEASE READ ALL OF THE COMMENT BELOW IF YOU WANT TO USE LuckPerms SUPPORT!
 ShopLimitLuckperms:
 

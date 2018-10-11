@@ -43,10 +43,12 @@ error:
     command-reset: 'Invalid usage!. Please use /csl reset <name>'
     # Fired when the command usage is invalid at /csl save-data <name>
     command-save-data: 'Invalid usage!. Please use /csl save-data <name>'
+    # Fired when the command usage is invalid at /csl status
+    command-status: 'Invalid usage!. Please use /csl status'
   # Fired when LuckPerms cannot load user data
   cannot-load-data: 'There''s an error with luckperms!. Please contact server admin for help!'
   # Fired when the targeted player is never player on the server
-  player-never-player: 'That player is never played on this server!. Please enter the name correctly!'
+  player-never-played: 'That player is never played on this server!. Please enter the name correctly!'
   # Fired then the shop limit has been reached by the player
   limit-reached: 'Shop limit reached!. Please upgrade your rank to create more shops!. Usage left : &a%created &f/ &c%max'
   # When the command sender send invalid reload type

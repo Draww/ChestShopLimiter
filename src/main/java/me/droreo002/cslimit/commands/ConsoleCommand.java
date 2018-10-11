@@ -1,7 +1,8 @@
 package me.droreo002.cslimit.commands;
 
-import com.earth2me.essentials.User;
 import me.droreo002.cslimit.ChestShopLimiter;
+import me.droreo002.cslimit.hook.objects.CMIHook;
+import me.droreo002.cslimit.hook.objects.EssentialsHook;
 import me.droreo002.cslimit.utils.MessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -60,14 +61,25 @@ public class ConsoleCommand implements CommandExecutor {
                     String name = args[1];
                     Player target = Bukkit.getPlayerExact(name);
                     if (target == null) {
-                        User user = main.getEssentials().getUser(name);
-                        if (user == null) {
-                            sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
+                        if (main.getHookManager().isEssentials()) {
+                            EssentialsHook hook = (EssentialsHook) main.getHookManager().getHookMap().get("Essentials");
+                            if (hook.getUser(name) == null) {
+                                sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
+                                return true;
+                            }
+                            OfflinePlayer off = Bukkit.getOfflinePlayer(hook.getUser(name).getConfigUUID());
+                            main.getLangManager().sendCheckFormat(sender, off);
+                            return true;
+                        } else {
+                            CMIHook hook = (CMIHook) main.getHookManager().getHookMap().get("CMI");
+                            if (hook.getPlayerManager().getUser(name) == null) {
+                                sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
+                                return true;
+                            }
+                            OfflinePlayer off = Bukkit.getOfflinePlayer(hook.getPlayerManager().getUser(name).getUniqueId());
+                            main.getLangManager().sendCheckFormat(sender, off);
                             return true;
                         }
-                        OfflinePlayer off = Bukkit.getOfflinePlayer(user.getConfigUUID());
-                        main.getLangManager().sendCheckFormat(sender, off);
-                        return true;
                     }
                     main.getLangManager().sendCheckFormat(sender, target);
                     return true;
@@ -84,15 +96,27 @@ public class ConsoleCommand implements CommandExecutor {
                     String name = args[1];
                     Player target = Bukkit.getPlayerExact(name);
                     if (target == null) {
-                        User user = main.getEssentials().getUser(name);
-                        if (user == null) {
-                            sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
+                        if (main.getHookManager().isEssentials()) {
+                            EssentialsHook hook = (EssentialsHook) main.getHookManager().getHookMap().get("Essentials");
+                            if (hook.getUser(name) == null) {
+                                sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
+                                return true;
+                            }
+                            OfflinePlayer off = Bukkit.getOfflinePlayer(hook.getUser(name).getConfigUUID());
+                            main.getApi().resetShopCreated(off);
+                            sender.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET, off.getPlayer()));
+                            return true;
+                        } else {
+                            CMIHook hook = (CMIHook) main.getHookManager().getHookMap().get("CMI");
+                            if (hook.getPlayerManager().getUser(name) == null) {
+                                sender.sendMessage(main.getLangManager().getMessage(MessageType.ERROR_PLAYER_NEVER_PLAYED));
+                                return true;
+                            }
+                            OfflinePlayer off = Bukkit.getOfflinePlayer(hook.getPlayerManager().getUser(name).getUniqueId());
+                            main.getApi().resetShopCreated(off);
+                            sender.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET, off.getPlayer()));
                             return true;
                         }
-                        OfflinePlayer off = Bukkit.getOfflinePlayer(user.getConfigUUID());
-                        main.getApi().resetShopCreated(off);
-                        sender.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET, off.getPlayer()));
-                        return true;
                     }
                     sender.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET, target));
                     target.sendMessage(main.getLangManager().getMessage(MessageType.SHOP_CREATED_RESET_OTHER).replaceAll("%player", "CONSOLE"));
