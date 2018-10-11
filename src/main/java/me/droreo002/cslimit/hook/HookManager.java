@@ -4,6 +4,7 @@ import me.droreo002.cslimit.ChestShopLimiter;
 import me.droreo002.cslimit.hook.objects.CMIHook;
 import me.droreo002.cslimit.hook.objects.EssentialsHook;
 import me.droreo002.cslimit.hook.objects.LuckPermsHook;
+import me.droreo002.cslimit.hook.objects.PlaceholderAPIHook;
 import me.lucko.luckperms.api.LuckPermsApi;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -48,6 +49,11 @@ public class HookManager {
         if (config.getBoolean("Dependency.LuckPerms")) {
             if (registerHook("LuckPerms", new LuckPermsHook())) {
                 setLuckPerms(true);
+            }
+        }
+        if (config.getBoolean("Dependency.PlaceholderAPI")) {
+            if (registerHook("PlaceholderAPI", new PlaceholderAPIHook())) {
+                setPlaceHolderAPI(true);
             }
         }
     }

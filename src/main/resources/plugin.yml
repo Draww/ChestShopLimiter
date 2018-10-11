@@ -3,7 +3,7 @@ version: 1.8
 main: me.droreo002.cslimit.ChestShopLimiter
 api-version: 1.13
 depend: [ChestShop]
-softdepend: [LuckPerms, Essentials, CMI]
+softdepend: [LuckPerms, Essentials, CMI, PlaceholderAPI]
 authors: [DrOreo002]
 
 commands:
